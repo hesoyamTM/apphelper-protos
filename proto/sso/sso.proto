@@ -13,8 +13,10 @@ service Auth {
 }
 
 message RegisterRequest {
-    string login = 1;
-    string password = 2;
+    string name = 1;
+    string surname = 2;
+    string login = 3;
+    string password = 4;
 }
 
 message RegisterResponse {
@@ -51,10 +53,10 @@ message GetUserResponse {
 }
 
 message GetUsersRequest {
-    repeated int64 user_id = 1;
+    repeated int64 user_ids = 1;
 }
 
 message GetUsersResponse {
-    repeated string name = 1;
-    repeated string surname = 2;
+    repeated string names = 1;
+    repeated string surnames = 2;
 }
