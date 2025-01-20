@@ -57,6 +57,11 @@ message GetUsersRequest {
 }
 
 message GetUsersResponse {
-    repeated string names = 1;
-    repeated string surnames = 2;
+    repeated User users = 1;
+}
+
+message User {
+    int64 id = 1;
+    string name = 2;
+    string surname = 3;
 }
