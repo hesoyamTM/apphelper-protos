@@ -7,7 +7,7 @@ option go_package = "report.v1;reportv1";
 service Results {
     rpc SetPublicKey(SetPublicKeyRequest) returns (Empty);
     rpc GetReport(GetReportRequest) returns (GetReportResponse);
-    rpc CrateReport(CreateReportRequest) returns (Empty);
+    rpc CreateReport(CreateReportRequest) returns (Empty);
 }
 
 message Empty {

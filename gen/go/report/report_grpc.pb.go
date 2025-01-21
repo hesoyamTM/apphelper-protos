@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type ResultsClient interface {
 	SetPublicKey(ctx context.Context, in *SetPublicKeyRequest, opts ...grpc.CallOption) (*Empty, error)
 	GetReport(ctx context.Context, in *GetReportRequest, opts ...grpc.CallOption) (*GetReportResponse, error)
-	CrateReport(ctx context.Context, in *CreateReportRequest, opts ...grpc.CallOption) (*Empty, error)
+	CreateReport(ctx context.Context, in *CreateReportRequest, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type resultsClient struct {
@@ -53,9 +53,9 @@ func (c *resultsClient) GetReport(ctx context.Context, in *GetReportRequest, opt
 	return out, nil
 }
 
-func (c *resultsClient) CrateReport(ctx context.Context, in *CreateReportRequest, opts ...grpc.CallOption) (*Empty, error) {
+func (c *resultsClient) CreateReport(ctx context.Context, in *CreateReportRequest, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/report.Results/CrateReport", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/report.Results/CreateReport", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (c *resultsClient) CrateReport(ctx context.Context, in *CreateReportRequest
 type ResultsServer interface {
 	SetPublicKey(context.Context, *SetPublicKeyRequest) (*Empty, error)
 	GetReport(context.Context, *GetReportRequest) (*GetReportResponse, error)
-	CrateReport(context.Context, *CreateReportRequest) (*Empty, error)
+	CreateReport(context.Context, *CreateReportRequest) (*Empty, error)
 	mustEmbedUnimplementedResultsServer()
 }
 
@@ -82,8 +82,8 @@ func (UnimplementedResultsServer) SetPublicKey(context.Context, *SetPublicKeyReq
 func (UnimplementedResultsServer) GetReport(context.Context, *GetReportRequest) (*GetReportResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetReport not implemented")
 }
-func (UnimplementedResultsServer) CrateReport(context.Context, *CreateReportRequest) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CrateReport not implemented")
+func (UnimplementedResultsServer) CreateReport(context.Context, *CreateReportRequest) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateReport not implemented")
 }
 func (UnimplementedResultsServer) mustEmbedUnimplementedResultsServer() {}
 
@@ -134,20 +134,20 @@ func _Results_GetReport_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Results_CrateReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Results_CreateReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateReportRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ResultsServer).CrateReport(ctx, in)
+		return srv.(ResultsServer).CreateReport(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/report.Results/CrateReport",
+		FullMethod: "/report.Results/CreateReport",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ResultsServer).CrateReport(ctx, req.(*CreateReportRequest))
+		return srv.(ResultsServer).CreateReport(ctx, req.(*CreateReportRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -168,8 +168,8 @@ var Results_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Results_GetReport_Handler,
 		},
 		{
-			MethodName: "CrateReport",
-			Handler:    _Results_CrateReport_Handler,
+			MethodName: "CreateReport",
+			Handler:    _Results_CreateReport_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
