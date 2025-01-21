@@ -1,13 +1,13 @@
 syntax = "proto3";
 
-package results;
+package report;
 
-option go_package = "results.v1;resultsv1";
+option go_package = "report.v1;reportv1";
 
 service Results {
     rpc SetPublicKey(SetPublicKeyRequest) returns (Empty);
-    rpc GetResult(GetResultRequest) returns (GetResultResponse);
-    rpc CrateResult(CreateResultRequest) returns (Empty);
+    rpc GetReport(GetReportRequest) returns (GetReportResponse);
+    rpc CrateReport(CreateReportRequest) returns (Empty);
 }
 
 message Empty {
@@ -18,18 +18,18 @@ message SetPublicKeyRequest {
     string key = 1;
 }
 
-message GetResultRequest {
+message GetReportRequest {
     int64 user_id = 1;
 }
 
-message GetResultResponse {
+message GetReportResponse {
     int64 student_id = 1;
     int64 trainer_id = 2;
     repeated image images = 3;
     string description = 4;
 }
 
-message CreateResultRequest {
+message CreateReportRequest {
     int64 student_id = 1;
     int64 trainer_id = 2;
     // repeated image images = 3;
