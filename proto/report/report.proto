@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package report;
 
+import "google/protobuf/timestamp.proto";
+
 option go_package = "report.v1;reportv1";
 
 service Results {
@@ -27,6 +29,7 @@ message GetReportResponse {
     int64 trainer_id = 2;
     repeated image images = 3;
     string description = 4;
+    google.protobuf.Timestamp date = 5;
 }
 
 message CreateReportRequest {
