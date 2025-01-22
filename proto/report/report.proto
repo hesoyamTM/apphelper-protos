@@ -21,7 +21,8 @@ message SetPublicKeyRequest {
 }
 
 message GetReportRequest {
-    int64 user_id = 1;
+    int64 student_id = 1;
+    int64 trainer_id = 2;
 }
 
 message GetReportResponse {
