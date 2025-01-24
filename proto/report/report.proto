@@ -6,9 +6,9 @@ import "google/protobuf/timestamp.proto";
 
 option go_package = "report.v1;reportv1";
 
-service Results {
+service Report {
     rpc SetPublicKey(SetPublicKeyRequest) returns (Empty);
-    rpc GetReport(GetReportRequest) returns (GetReportResponse);
+    rpc GetReports(GetReportsRequest) returns (GetReportsResponse);
     rpc CreateReport(CreateReportRequest) returns (Empty);
 }
 
@@ -20,13 +20,13 @@ message SetPublicKeyRequest {
     string key = 1;
 }
 
-message GetReportRequest {
+message GetReportsRequest {
     int64 student_id = 1;
     int64 trainer_id = 2;
 }
 
-message GetReportResponse {
-    repeated Report report = 1;
+message GetReportsResponse {
+    repeated report reports = 1;
 }
 
 message CreateReportRequest {
@@ -36,7 +36,7 @@ message CreateReportRequest {
     string description = 4;
 }
 
-message Report {
+message report {
     int64 student_id = 1;
     int64 trainer_id = 2;
     repeated image images = 3;

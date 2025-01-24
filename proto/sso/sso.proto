@@ -5,11 +5,15 @@ package auth;
 option go_package = "sso.v1;ssov1";
 
 service Auth {
-    rpc Register(RegisterRequest) returns (RegisterResponse);
-    rpc Login(LoginRequest) returns (LoginResponse);
-    rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+    rpc Register(RegisterRequest) returns (Empty);
+    rpc Login(LoginRequest) returns (Empty);
+    rpc RefreshToken(RefreshTokenRequest) returns (Empty);
     rpc GetUser(GetUserRequest) returns (GetUserResponse);
     rpc GetUsers(GetUsersRequest) returns (GetUsersResponse);
+}
+
+message Empty {
+
 }
 
 message RegisterRequest {
@@ -19,28 +23,13 @@ message RegisterRequest {
     string password = 4;
 }
 
-message RegisterResponse {
-    string accessToken = 1;
-    string refreshToken = 2;
-}
-
 message LoginRequest {
     string login = 1;
     string password = 2;
 }
 
-message LoginResponse {
-    string accessToken = 1;
-    string refreshToken = 2;
-}
-
 message RefreshTokenRequest {
     string refreshToken = 1;
-}
-
-message RefreshTokenResponse {
-    string accessToken = 1;
-    string refreshToken = 2;
 }
 
 message GetUserRequest {

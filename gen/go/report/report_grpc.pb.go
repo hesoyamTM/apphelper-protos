@@ -18,158 +18,158 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// ResultsClient is the client API for Results service.
+// ReportClient is the client API for Report service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type ResultsClient interface {
+type ReportClient interface {
 	SetPublicKey(ctx context.Context, in *SetPublicKeyRequest, opts ...grpc.CallOption) (*Empty, error)
-	GetReport(ctx context.Context, in *GetReportRequest, opts ...grpc.CallOption) (*GetReportResponse, error)
+	GetReports(ctx context.Context, in *GetReportsRequest, opts ...grpc.CallOption) (*GetReportsResponse, error)
 	CreateReport(ctx context.Context, in *CreateReportRequest, opts ...grpc.CallOption) (*Empty, error)
 }
 
-type resultsClient struct {
+type reportClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewResultsClient(cc grpc.ClientConnInterface) ResultsClient {
-	return &resultsClient{cc}
+func NewReportClient(cc grpc.ClientConnInterface) ReportClient {
+	return &reportClient{cc}
 }
 
-func (c *resultsClient) SetPublicKey(ctx context.Context, in *SetPublicKeyRequest, opts ...grpc.CallOption) (*Empty, error) {
+func (c *reportClient) SetPublicKey(ctx context.Context, in *SetPublicKeyRequest, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/report.Results/SetPublicKey", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/report.Report/SetPublicKey", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *resultsClient) GetReport(ctx context.Context, in *GetReportRequest, opts ...grpc.CallOption) (*GetReportResponse, error) {
-	out := new(GetReportResponse)
-	err := c.cc.Invoke(ctx, "/report.Results/GetReport", in, out, opts...)
+func (c *reportClient) GetReports(ctx context.Context, in *GetReportsRequest, opts ...grpc.CallOption) (*GetReportsResponse, error) {
+	out := new(GetReportsResponse)
+	err := c.cc.Invoke(ctx, "/report.Report/GetReports", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *resultsClient) CreateReport(ctx context.Context, in *CreateReportRequest, opts ...grpc.CallOption) (*Empty, error) {
+func (c *reportClient) CreateReport(ctx context.Context, in *CreateReportRequest, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/report.Results/CreateReport", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/report.Report/CreateReport", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// ResultsServer is the server API for Results service.
-// All implementations must embed UnimplementedResultsServer
+// ReportServer is the server API for Report service.
+// All implementations must embed UnimplementedReportServer
 // for forward compatibility
-type ResultsServer interface {
+type ReportServer interface {
 	SetPublicKey(context.Context, *SetPublicKeyRequest) (*Empty, error)
-	GetReport(context.Context, *GetReportRequest) (*GetReportResponse, error)
+	GetReports(context.Context, *GetReportsRequest) (*GetReportsResponse, error)
 	CreateReport(context.Context, *CreateReportRequest) (*Empty, error)
-	mustEmbedUnimplementedResultsServer()
+	mustEmbedUnimplementedReportServer()
 }
 
-// UnimplementedResultsServer must be embedded to have forward compatible implementations.
-type UnimplementedResultsServer struct {
+// UnimplementedReportServer must be embedded to have forward compatible implementations.
+type UnimplementedReportServer struct {
 }
 
-func (UnimplementedResultsServer) SetPublicKey(context.Context, *SetPublicKeyRequest) (*Empty, error) {
+func (UnimplementedReportServer) SetPublicKey(context.Context, *SetPublicKeyRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetPublicKey not implemented")
 }
-func (UnimplementedResultsServer) GetReport(context.Context, *GetReportRequest) (*GetReportResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetReport not implemented")
+func (UnimplementedReportServer) GetReports(context.Context, *GetReportsRequest) (*GetReportsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetReports not implemented")
 }
-func (UnimplementedResultsServer) CreateReport(context.Context, *CreateReportRequest) (*Empty, error) {
+func (UnimplementedReportServer) CreateReport(context.Context, *CreateReportRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateReport not implemented")
 }
-func (UnimplementedResultsServer) mustEmbedUnimplementedResultsServer() {}
+func (UnimplementedReportServer) mustEmbedUnimplementedReportServer() {}
 
-// UnsafeResultsServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to ResultsServer will
+// UnsafeReportServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ReportServer will
 // result in compilation errors.
-type UnsafeResultsServer interface {
-	mustEmbedUnimplementedResultsServer()
+type UnsafeReportServer interface {
+	mustEmbedUnimplementedReportServer()
 }
 
-func RegisterResultsServer(s grpc.ServiceRegistrar, srv ResultsServer) {
-	s.RegisterService(&Results_ServiceDesc, srv)
+func RegisterReportServer(s grpc.ServiceRegistrar, srv ReportServer) {
+	s.RegisterService(&Report_ServiceDesc, srv)
 }
 
-func _Results_SetPublicKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Report_SetPublicKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetPublicKeyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ResultsServer).SetPublicKey(ctx, in)
+		return srv.(ReportServer).SetPublicKey(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/report.Results/SetPublicKey",
+		FullMethod: "/report.Report/SetPublicKey",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ResultsServer).SetPublicKey(ctx, req.(*SetPublicKeyRequest))
+		return srv.(ReportServer).SetPublicKey(ctx, req.(*SetPublicKeyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Results_GetReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetReportRequest)
+func _Report_GetReports_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetReportsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ResultsServer).GetReport(ctx, in)
+		return srv.(ReportServer).GetReports(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/report.Results/GetReport",
+		FullMethod: "/report.Report/GetReports",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ResultsServer).GetReport(ctx, req.(*GetReportRequest))
+		return srv.(ReportServer).GetReports(ctx, req.(*GetReportsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Results_CreateReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Report_CreateReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateReportRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ResultsServer).CreateReport(ctx, in)
+		return srv.(ReportServer).CreateReport(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/report.Results/CreateReport",
+		FullMethod: "/report.Report/CreateReport",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ResultsServer).CreateReport(ctx, req.(*CreateReportRequest))
+		return srv.(ReportServer).CreateReport(ctx, req.(*CreateReportRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Results_ServiceDesc is the grpc.ServiceDesc for Results service.
+// Report_ServiceDesc is the grpc.ServiceDesc for Report service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Results_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "report.Results",
-	HandlerType: (*ResultsServer)(nil),
+var Report_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "report.Report",
+	HandlerType: (*ReportServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "SetPublicKey",
-			Handler:    _Results_SetPublicKey_Handler,
+			Handler:    _Report_SetPublicKey_Handler,
 		},
 		{
-			MethodName: "GetReport",
-			Handler:    _Results_GetReport_Handler,
+			MethodName: "GetReports",
+			Handler:    _Report_GetReports_Handler,
 		},
 		{
 			MethodName: "CreateReport",
-			Handler:    _Results_CreateReport_Handler,
+			Handler:    _Report_CreateReport_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
