@@ -23,12 +23,12 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ScheduleClient interface {
 	SetPublicKey(ctx context.Context, in *SetPublicKeyRequest, opts ...grpc.CallOption) (*Empty, error)
-	CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*CreateGroupResponse, error)
-	GetGroup(ctx context.Context, in *GetGroupRequest, opts ...grpc.CallOption) (*GetGroupResponse, error)
+	CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*Empty, error)
+	GetGroups(ctx context.Context, in *GetGroupsRequest, opts ...grpc.CallOption) (*GetGroupsResponse, error)
 	AddToGroup(ctx context.Context, in *AddToGroupRequest, opts ...grpc.CallOption) (*Empty, error)
 	// rpc ChangeInvitationLink(ChangeInvitationLinkRequest) returns (ChangeInvitationLinkResponse);
 	CreateSchedule(ctx context.Context, in *CreateScheduleRequest, opts ...grpc.CallOption) (*Empty, error)
-	GetSchedule(ctx context.Context, in *GetScheduleRequest, opts ...grpc.CallOption) (*GetScheduleResponse, error)
+	GetSchedule(ctx context.Context, in *GetSchedulesRequest, opts ...grpc.CallOption) (*GetSchedulesResponse, error)
 }
 
 type scheduleClient struct {
@@ -48,8 +48,8 @@ func (c *scheduleClient) SetPublicKey(ctx context.Context, in *SetPublicKeyReque
 	return out, nil
 }
 
-func (c *scheduleClient) CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*CreateGroupResponse, error) {
-	out := new(CreateGroupResponse)
+func (c *scheduleClient) CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/schedule.Schedule/CreateGroup", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -57,9 +57,9 @@ func (c *scheduleClient) CreateGroup(ctx context.Context, in *CreateGroupRequest
 	return out, nil
 }
 
-func (c *scheduleClient) GetGroup(ctx context.Context, in *GetGroupRequest, opts ...grpc.CallOption) (*GetGroupResponse, error) {
-	out := new(GetGroupResponse)
-	err := c.cc.Invoke(ctx, "/schedule.Schedule/GetGroup", in, out, opts...)
+func (c *scheduleClient) GetGroups(ctx context.Context, in *GetGroupsRequest, opts ...grpc.CallOption) (*GetGroupsResponse, error) {
+	out := new(GetGroupsResponse)
+	err := c.cc.Invoke(ctx, "/schedule.Schedule/GetGroups", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -84,8 +84,8 @@ func (c *scheduleClient) CreateSchedule(ctx context.Context, in *CreateScheduleR
 	return out, nil
 }
 
-func (c *scheduleClient) GetSchedule(ctx context.Context, in *GetScheduleRequest, opts ...grpc.CallOption) (*GetScheduleResponse, error) {
-	out := new(GetScheduleResponse)
+func (c *scheduleClient) GetSchedule(ctx context.Context, in *GetSchedulesRequest, opts ...grpc.CallOption) (*GetSchedulesResponse, error) {
+	out := new(GetSchedulesResponse)
 	err := c.cc.Invoke(ctx, "/schedule.Schedule/GetSchedule", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -98,12 +98,12 @@ func (c *scheduleClient) GetSchedule(ctx context.Context, in *GetScheduleRequest
 // for forward compatibility
 type ScheduleServer interface {
 	SetPublicKey(context.Context, *SetPublicKeyRequest) (*Empty, error)
-	CreateGroup(context.Context, *CreateGroupRequest) (*CreateGroupResponse, error)
-	GetGroup(context.Context, *GetGroupRequest) (*GetGroupResponse, error)
+	CreateGroup(context.Context, *CreateGroupRequest) (*Empty, error)
+	GetGroups(context.Context, *GetGroupsRequest) (*GetGroupsResponse, error)
 	AddToGroup(context.Context, *AddToGroupRequest) (*Empty, error)
 	// rpc ChangeInvitationLink(ChangeInvitationLinkRequest) returns (ChangeInvitationLinkResponse);
 	CreateSchedule(context.Context, *CreateScheduleRequest) (*Empty, error)
-	GetSchedule(context.Context, *GetScheduleRequest) (*GetScheduleResponse, error)
+	GetSchedule(context.Context, *GetSchedulesRequest) (*GetSchedulesResponse, error)
 	mustEmbedUnimplementedScheduleServer()
 }
 
@@ -114,11 +114,11 @@ type UnimplementedScheduleServer struct {
 func (UnimplementedScheduleServer) SetPublicKey(context.Context, *SetPublicKeyRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetPublicKey not implemented")
 }
-func (UnimplementedScheduleServer) CreateGroup(context.Context, *CreateGroupRequest) (*CreateGroupResponse, error) {
+func (UnimplementedScheduleServer) CreateGroup(context.Context, *CreateGroupRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateGroup not implemented")
 }
-func (UnimplementedScheduleServer) GetGroup(context.Context, *GetGroupRequest) (*GetGroupResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetGroup not implemented")
+func (UnimplementedScheduleServer) GetGroups(context.Context, *GetGroupsRequest) (*GetGroupsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGroups not implemented")
 }
 func (UnimplementedScheduleServer) AddToGroup(context.Context, *AddToGroupRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddToGroup not implemented")
@@ -126,7 +126,7 @@ func (UnimplementedScheduleServer) AddToGroup(context.Context, *AddToGroupReques
 func (UnimplementedScheduleServer) CreateSchedule(context.Context, *CreateScheduleRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSchedule not implemented")
 }
-func (UnimplementedScheduleServer) GetSchedule(context.Context, *GetScheduleRequest) (*GetScheduleResponse, error) {
+func (UnimplementedScheduleServer) GetSchedule(context.Context, *GetSchedulesRequest) (*GetSchedulesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSchedule not implemented")
 }
 func (UnimplementedScheduleServer) mustEmbedUnimplementedScheduleServer() {}
@@ -178,20 +178,20 @@ func _Schedule_CreateGroup_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Schedule_GetGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetGroupRequest)
+func _Schedule_GetGroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetGroupsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ScheduleServer).GetGroup(ctx, in)
+		return srv.(ScheduleServer).GetGroups(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/schedule.Schedule/GetGroup",
+		FullMethod: "/schedule.Schedule/GetGroups",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ScheduleServer).GetGroup(ctx, req.(*GetGroupRequest))
+		return srv.(ScheduleServer).GetGroups(ctx, req.(*GetGroupsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -233,7 +233,7 @@ func _Schedule_CreateSchedule_Handler(srv interface{}, ctx context.Context, dec 
 }
 
 func _Schedule_GetSchedule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetScheduleRequest)
+	in := new(GetSchedulesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -245,7 +245,7 @@ func _Schedule_GetSchedule_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/schedule.Schedule/GetSchedule",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ScheduleServer).GetSchedule(ctx, req.(*GetScheduleRequest))
+		return srv.(ScheduleServer).GetSchedule(ctx, req.(*GetSchedulesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -266,8 +266,8 @@ var Schedule_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Schedule_CreateGroup_Handler,
 		},
 		{
-			MethodName: "GetGroup",
-			Handler:    _Schedule_GetGroup_Handler,
+			MethodName: "GetGroups",
+			Handler:    _Schedule_GetGroups_Handler,
 		},
 		{
 			MethodName: "AddToGroup",
