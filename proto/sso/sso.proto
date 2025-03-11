@@ -8,6 +8,7 @@ service Auth {
     rpc Register(RegisterRequest) returns (RegisterResponse);
     rpc Login(LoginRequest) returns (LoginResponse);
     rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+    rpc GetSession(GetSessionRequest) returns (GetSessionResponse);
     rpc GetUser(GetUserRequest) returns (GetUserResponse);
     rpc GetUsers(GetUsersRequest) returns (GetUsersResponse);
 }
@@ -39,6 +40,15 @@ message RefreshTokenRequest {
 }
 
 message RefreshTokenResponse {
+    string accessToken = 1;
+    string refreshToken = 2;
+}
+
+message GetSessionRequest {
+    User user = 1;
+}
+
+message GetSessionResponse {
     string accessToken = 1;
     string refreshToken = 2;
 }
