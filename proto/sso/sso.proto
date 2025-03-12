@@ -45,6 +45,7 @@ message RefreshTokenResponse {
 }
 
 message GetSessionRequest {
+    string accessToken = 1;
 }
 
 message GetSessionResponse {

@@ -7,17 +7,12 @@ import "google/protobuf/timestamp.proto";
 option go_package = "report.v1;reportv1";
 
 service Report {
-    rpc SetPublicKey(SetPublicKeyRequest) returns (Empty);
     rpc GetReports(GetReportsRequest) returns (GetReportsResponse);
     rpc CreateReport(CreateReportRequest) returns (Empty);
 }
 
 message Empty {
 
-}
-
-message SetPublicKeyRequest {
-    string key = 1;
 }
 
 message GetReportsRequest {

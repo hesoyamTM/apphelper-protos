@@ -19,7 +19,6 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Schedule_SetPublicKey_FullMethodName   = "/schedule.Schedule/SetPublicKey"
 	Schedule_CreateGroup_FullMethodName    = "/schedule.Schedule/CreateGroup"
 	Schedule_GetGroups_FullMethodName      = "/schedule.Schedule/GetGroups"
 	Schedule_AddToGroup_FullMethodName     = "/schedule.Schedule/AddToGroup"
@@ -31,7 +30,6 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ScheduleClient interface {
-	SetPublicKey(ctx context.Context, in *SetPublicKeyRequest, opts ...grpc.CallOption) (*Empty, error)
 	CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*Empty, error)
 	GetGroups(ctx context.Context, in *GetGroupsRequest, opts ...grpc.CallOption) (*GetGroupsResponse, error)
 	AddToGroup(ctx context.Context, in *AddToGroupRequest, opts ...grpc.CallOption) (*Empty, error)
@@ -46,16 +44,6 @@ type scheduleClient struct {
 
 func NewScheduleClient(cc grpc.ClientConnInterface) ScheduleClient {
 	return &scheduleClient{cc}
-}
-
-func (c *scheduleClient) SetPublicKey(ctx context.Context, in *SetPublicKeyRequest, opts ...grpc.CallOption) (*Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, Schedule_SetPublicKey_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *scheduleClient) CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*Empty, error) {
@@ -112,7 +100,6 @@ func (c *scheduleClient) GetSchedule(ctx context.Context, in *GetSchedulesReques
 // All implementations must embed UnimplementedScheduleServer
 // for forward compatibility.
 type ScheduleServer interface {
-	SetPublicKey(context.Context, *SetPublicKeyRequest) (*Empty, error)
 	CreateGroup(context.Context, *CreateGroupRequest) (*Empty, error)
 	GetGroups(context.Context, *GetGroupsRequest) (*GetGroupsResponse, error)
 	AddToGroup(context.Context, *AddToGroupRequest) (*Empty, error)
@@ -129,9 +116,6 @@ type ScheduleServer interface {
 // pointer dereference when methods are called.
 type UnimplementedScheduleServer struct{}
 
-func (UnimplementedScheduleServer) SetPublicKey(context.Context, *SetPublicKeyRequest) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetPublicKey not implemented")
-}
 func (UnimplementedScheduleServer) CreateGroup(context.Context, *CreateGroupRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateGroup not implemented")
 }
@@ -166,24 +150,6 @@ func RegisterScheduleServer(s grpc.ServiceRegistrar, srv ScheduleServer) {
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&Schedule_ServiceDesc, srv)
-}
-
-func _Schedule_SetPublicKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetPublicKeyRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ScheduleServer).SetPublicKey(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Schedule_SetPublicKey_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ScheduleServer).SetPublicKey(ctx, req.(*SetPublicKeyRequest))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _Schedule_CreateGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -283,10 +249,6 @@ var Schedule_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "schedule.Schedule",
 	HandlerType: (*ScheduleServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "SetPublicKey",
-			Handler:    _Schedule_SetPublicKey_Handler,
-		},
 		{
 			MethodName: "CreateGroup",
 			Handler:    _Schedule_CreateGroup_Handler,

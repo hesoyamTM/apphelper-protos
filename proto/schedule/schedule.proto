@@ -7,7 +7,6 @@ import "google/protobuf/timestamp.proto";
 option go_package = "schedule.v1;schedulev1";
 
 service Schedule {
-    rpc SetPublicKey(SetPublicKeyRequest) returns (Empty);
     rpc CreateGroup(CreateGroupRequest) returns (Empty);
     rpc GetGroups(GetGroupsRequest) returns (GetGroupsResponse);
     rpc AddToGroup(AddToGroupRequest) returns (Empty);
@@ -19,11 +18,6 @@ service Schedule {
 message Empty {
 
 }
-
-message SetPublicKeyRequest {
-    string key = 1;
-}
-
 message CreateGroupRequest {
     string name = 1;
     int64 trainer_id = 2;
