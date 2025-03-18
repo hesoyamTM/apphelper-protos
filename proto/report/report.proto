@@ -26,9 +26,10 @@ message GetReportsResponse {
 
 message CreateReportRequest {
     int64 student_id = 1;
-    int64 groupId = 2;
+    int64 group_id = 2;
+    int64 trainer_id = 3;
     // repeated image images = 3;
-    string description = 3;
+    string description = 4;
 }
 
 message report {
