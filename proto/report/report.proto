@@ -18,6 +18,7 @@ message Empty {
 message GetReportsRequest {
     int64 student_id = 1;
     int64 trainer_id = 2;
+    int64 group_id = 3;
 }
 
 message GetReportsResponse {
