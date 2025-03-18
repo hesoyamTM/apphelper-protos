@@ -26,9 +26,9 @@ message GetReportsResponse {
 
 message CreateReportRequest {
     int64 student_id = 1;
-    int64 trainer_id = 2;
+    int64 groupId = 2;
     // repeated image images = 3;
-    string description = 4;
+    string description = 3;
 }
 
 message report {
@@ -37,6 +37,8 @@ message report {
     repeated image images = 3;
     string description = 4;
     google.protobuf.Timestamp date = 5;
+    string groupName = 6;
+    int64 groupId = 7;
 }
 
 message image {

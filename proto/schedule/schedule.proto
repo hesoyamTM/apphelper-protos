@@ -12,6 +12,7 @@ service Schedule {
     rpc AddToGroup(AddToGroupRequest) returns (Empty);
     //rpc ChangeInvitationLink(ChangeInvitationLinkRequest) returns (ChangeInvitationLinkResponse);
     rpc CreateSchedule(CreateScheduleRequest) returns (Empty);
+    rpc CreateScheduleForGroup(CreateScheduleForGroupRequest) returns (Empty);
     rpc GetSchedule(GetSchedulesRequest) returns (GetSchedulesResponse);
 }
 
@@ -40,6 +41,12 @@ message AddToGroupRequest {
 message CreateScheduleRequest {
     int64 group_id = 1;
     int64 student_id = 2;
+    int64 trainer_id = 3;
+    google.protobuf.Timestamp date = 4;
+}
+
+message CreateScheduleForGroupRequest {
+    int64 group_id = 1;
     int64 trainer_id = 3;
     google.protobuf.Timestamp date = 4;
 }

@@ -19,11 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Schedule_CreateGroup_FullMethodName    = "/schedule.Schedule/CreateGroup"
-	Schedule_GetGroups_FullMethodName      = "/schedule.Schedule/GetGroups"
-	Schedule_AddToGroup_FullMethodName     = "/schedule.Schedule/AddToGroup"
-	Schedule_CreateSchedule_FullMethodName = "/schedule.Schedule/CreateSchedule"
-	Schedule_GetSchedule_FullMethodName    = "/schedule.Schedule/GetSchedule"
+	Schedule_CreateGroup_FullMethodName            = "/schedule.Schedule/CreateGroup"
+	Schedule_GetGroups_FullMethodName              = "/schedule.Schedule/GetGroups"
+	Schedule_AddToGroup_FullMethodName             = "/schedule.Schedule/AddToGroup"
+	Schedule_CreateSchedule_FullMethodName         = "/schedule.Schedule/CreateSchedule"
+	Schedule_CreateScheduleForGroup_FullMethodName = "/schedule.Schedule/CreateScheduleForGroup"
+	Schedule_GetSchedule_FullMethodName            = "/schedule.Schedule/GetSchedule"
 )
 
 // ScheduleClient is the client API for Schedule service.
@@ -35,6 +36,7 @@ type ScheduleClient interface {
 	AddToGroup(ctx context.Context, in *AddToGroupRequest, opts ...grpc.CallOption) (*Empty, error)
 	// rpc ChangeInvitationLink(ChangeInvitationLinkRequest) returns (ChangeInvitationLinkResponse);
 	CreateSchedule(ctx context.Context, in *CreateScheduleRequest, opts ...grpc.CallOption) (*Empty, error)
+	CreateScheduleForGroup(ctx context.Context, in *CreateScheduleForGroupRequest, opts ...grpc.CallOption) (*Empty, error)
 	GetSchedule(ctx context.Context, in *GetSchedulesRequest, opts ...grpc.CallOption) (*GetSchedulesResponse, error)
 }
 
@@ -86,6 +88,16 @@ func (c *scheduleClient) CreateSchedule(ctx context.Context, in *CreateScheduleR
 	return out, nil
 }
 
+func (c *scheduleClient) CreateScheduleForGroup(ctx context.Context, in *CreateScheduleForGroupRequest, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, Schedule_CreateScheduleForGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *scheduleClient) GetSchedule(ctx context.Context, in *GetSchedulesRequest, opts ...grpc.CallOption) (*GetSchedulesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetSchedulesResponse)
@@ -105,6 +117,7 @@ type ScheduleServer interface {
 	AddToGroup(context.Context, *AddToGroupRequest) (*Empty, error)
 	// rpc ChangeInvitationLink(ChangeInvitationLinkRequest) returns (ChangeInvitationLinkResponse);
 	CreateSchedule(context.Context, *CreateScheduleRequest) (*Empty, error)
+	CreateScheduleForGroup(context.Context, *CreateScheduleForGroupRequest) (*Empty, error)
 	GetSchedule(context.Context, *GetSchedulesRequest) (*GetSchedulesResponse, error)
 	mustEmbedUnimplementedScheduleServer()
 }
@@ -127,6 +140,9 @@ func (UnimplementedScheduleServer) AddToGroup(context.Context, *AddToGroupReques
 }
 func (UnimplementedScheduleServer) CreateSchedule(context.Context, *CreateScheduleRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSchedule not implemented")
+}
+func (UnimplementedScheduleServer) CreateScheduleForGroup(context.Context, *CreateScheduleForGroupRequest) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateScheduleForGroup not implemented")
 }
 func (UnimplementedScheduleServer) GetSchedule(context.Context, *GetSchedulesRequest) (*GetSchedulesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSchedule not implemented")
@@ -224,6 +240,24 @@ func _Schedule_CreateSchedule_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Schedule_CreateScheduleForGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateScheduleForGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ScheduleServer).CreateScheduleForGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Schedule_CreateScheduleForGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ScheduleServer).CreateScheduleForGroup(ctx, req.(*CreateScheduleForGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Schedule_GetSchedule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetSchedulesRequest)
 	if err := dec(in); err != nil {
@@ -264,6 +298,10 @@ var Schedule_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateSchedule",
 			Handler:    _Schedule_CreateSchedule_Handler,
+		},
+		{
+			MethodName: "CreateScheduleForGroup",
+			Handler:    _Schedule_CreateScheduleForGroup_Handler,
 		},
 		{
 			MethodName: "GetSchedule",
