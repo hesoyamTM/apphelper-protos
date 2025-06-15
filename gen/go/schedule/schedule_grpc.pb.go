@@ -22,9 +22,12 @@ const (
 	Schedule_CreateGroup_FullMethodName            = "/schedule.Schedule/CreateGroup"
 	Schedule_GetGroups_FullMethodName              = "/schedule.Schedule/GetGroups"
 	Schedule_AddToGroup_FullMethodName             = "/schedule.Schedule/AddToGroup"
+	Schedule_DeleteGroup_FullMethodName            = "/schedule.Schedule/DeleteGroup"
 	Schedule_CreateSchedule_FullMethodName         = "/schedule.Schedule/CreateSchedule"
 	Schedule_CreateScheduleForGroup_FullMethodName = "/schedule.Schedule/CreateScheduleForGroup"
 	Schedule_GetSchedule_FullMethodName            = "/schedule.Schedule/GetSchedule"
+	Schedule_DeleteSchedule_FullMethodName         = "/schedule.Schedule/DeleteSchedule"
+	Schedule_LoginCallback_FullMethodName          = "/schedule.Schedule/LoginCallback"
 )
 
 // ScheduleClient is the client API for Schedule service.
@@ -34,10 +37,13 @@ type ScheduleClient interface {
 	CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*Empty, error)
 	GetGroups(ctx context.Context, in *GetGroupsRequest, opts ...grpc.CallOption) (*GetGroupsResponse, error)
 	AddToGroup(ctx context.Context, in *AddToGroupRequest, opts ...grpc.CallOption) (*Empty, error)
+	DeleteGroup(ctx context.Context, in *DeleteGroupRequest, opts ...grpc.CallOption) (*Empty, error)
 	// rpc ChangeInvitationLink(ChangeInvitationLinkRequest) returns (ChangeInvitationLinkResponse);
 	CreateSchedule(ctx context.Context, in *CreateScheduleRequest, opts ...grpc.CallOption) (*Empty, error)
 	CreateScheduleForGroup(ctx context.Context, in *CreateScheduleForGroupRequest, opts ...grpc.CallOption) (*Empty, error)
 	GetSchedule(ctx context.Context, in *GetSchedulesRequest, opts ...grpc.CallOption) (*GetSchedulesResponse, error)
+	DeleteSchedule(ctx context.Context, in *DeleteScheduleRequest, opts ...grpc.CallOption) (*Empty, error)
+	LoginCallback(ctx context.Context, in *LoginCallbackRequest, opts ...grpc.CallOption) (*LoginCallbaskResponse, error)
 }
 
 type scheduleClient struct {
@@ -78,6 +84,16 @@ func (c *scheduleClient) AddToGroup(ctx context.Context, in *AddToGroupRequest, 
 	return out, nil
 }
 
+func (c *scheduleClient) DeleteGroup(ctx context.Context, in *DeleteGroupRequest, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, Schedule_DeleteGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *scheduleClient) CreateSchedule(ctx context.Context, in *CreateScheduleRequest, opts ...grpc.CallOption) (*Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Empty)
@@ -108,6 +124,26 @@ func (c *scheduleClient) GetSchedule(ctx context.Context, in *GetSchedulesReques
 	return out, nil
 }
 
+func (c *scheduleClient) DeleteSchedule(ctx context.Context, in *DeleteScheduleRequest, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, Schedule_DeleteSchedule_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *scheduleClient) LoginCallback(ctx context.Context, in *LoginCallbackRequest, opts ...grpc.CallOption) (*LoginCallbaskResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LoginCallbaskResponse)
+	err := c.cc.Invoke(ctx, Schedule_LoginCallback_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ScheduleServer is the server API for Schedule service.
 // All implementations must embed UnimplementedScheduleServer
 // for forward compatibility.
@@ -115,10 +151,13 @@ type ScheduleServer interface {
 	CreateGroup(context.Context, *CreateGroupRequest) (*Empty, error)
 	GetGroups(context.Context, *GetGroupsRequest) (*GetGroupsResponse, error)
 	AddToGroup(context.Context, *AddToGroupRequest) (*Empty, error)
+	DeleteGroup(context.Context, *DeleteGroupRequest) (*Empty, error)
 	// rpc ChangeInvitationLink(ChangeInvitationLinkRequest) returns (ChangeInvitationLinkResponse);
 	CreateSchedule(context.Context, *CreateScheduleRequest) (*Empty, error)
 	CreateScheduleForGroup(context.Context, *CreateScheduleForGroupRequest) (*Empty, error)
 	GetSchedule(context.Context, *GetSchedulesRequest) (*GetSchedulesResponse, error)
+	DeleteSchedule(context.Context, *DeleteScheduleRequest) (*Empty, error)
+	LoginCallback(context.Context, *LoginCallbackRequest) (*LoginCallbaskResponse, error)
 	mustEmbedUnimplementedScheduleServer()
 }
 
@@ -138,6 +177,9 @@ func (UnimplementedScheduleServer) GetGroups(context.Context, *GetGroupsRequest)
 func (UnimplementedScheduleServer) AddToGroup(context.Context, *AddToGroupRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddToGroup not implemented")
 }
+func (UnimplementedScheduleServer) DeleteGroup(context.Context, *DeleteGroupRequest) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteGroup not implemented")
+}
 func (UnimplementedScheduleServer) CreateSchedule(context.Context, *CreateScheduleRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSchedule not implemented")
 }
@@ -146,6 +188,12 @@ func (UnimplementedScheduleServer) CreateScheduleForGroup(context.Context, *Crea
 }
 func (UnimplementedScheduleServer) GetSchedule(context.Context, *GetSchedulesRequest) (*GetSchedulesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSchedule not implemented")
+}
+func (UnimplementedScheduleServer) DeleteSchedule(context.Context, *DeleteScheduleRequest) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteSchedule not implemented")
+}
+func (UnimplementedScheduleServer) LoginCallback(context.Context, *LoginCallbackRequest) (*LoginCallbaskResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoginCallback not implemented")
 }
 func (UnimplementedScheduleServer) mustEmbedUnimplementedScheduleServer() {}
 func (UnimplementedScheduleServer) testEmbeddedByValue()                  {}
@@ -222,6 +270,24 @@ func _Schedule_AddToGroup_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Schedule_DeleteGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ScheduleServer).DeleteGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Schedule_DeleteGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ScheduleServer).DeleteGroup(ctx, req.(*DeleteGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Schedule_CreateSchedule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateScheduleRequest)
 	if err := dec(in); err != nil {
@@ -276,6 +342,42 @@ func _Schedule_GetSchedule_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Schedule_DeleteSchedule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteScheduleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ScheduleServer).DeleteSchedule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Schedule_DeleteSchedule_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ScheduleServer).DeleteSchedule(ctx, req.(*DeleteScheduleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Schedule_LoginCallback_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginCallbackRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ScheduleServer).LoginCallback(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Schedule_LoginCallback_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ScheduleServer).LoginCallback(ctx, req.(*LoginCallbackRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Schedule_ServiceDesc is the grpc.ServiceDesc for Schedule service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -296,6 +398,10 @@ var Schedule_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Schedule_AddToGroup_Handler,
 		},
 		{
+			MethodName: "DeleteGroup",
+			Handler:    _Schedule_DeleteGroup_Handler,
+		},
+		{
 			MethodName: "CreateSchedule",
 			Handler:    _Schedule_CreateSchedule_Handler,
 		},
@@ -306,6 +412,14 @@ var Schedule_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSchedule",
 			Handler:    _Schedule_GetSchedule_Handler,
+		},
+		{
+			MethodName: "DeleteSchedule",
+			Handler:    _Schedule_DeleteSchedule_Handler,
+		},
+		{
+			MethodName: "LoginCallback",
+			Handler:    _Schedule_LoginCallback_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
