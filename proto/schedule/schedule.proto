@@ -16,7 +16,8 @@ service Schedule {
     rpc CreateScheduleForGroup(CreateScheduleForGroupRequest) returns (Empty);
     rpc GetSchedule(GetSchedulesRequest) returns (GetSchedulesResponse);
     rpc DeleteSchedule(DeleteScheduleRequest) returns (Empty);
-    rpc LoginCallback(LoginCallbackRequest) returns (LoginCallbaskResponse);
+    rpc LoginCallback(LoginCallbackRequest) returns (Empty);
+    rpc GetLoginLink(Empty) returns (GetLoginLinkResponse);
 }
 
 message Empty {
@@ -80,8 +81,8 @@ message LoginCallbackRequest {
     string auth_code = 1;
 }
 
-message LoginCallbaskResponse {
-    string access_token = 1;
+message GetLoginLinkResponse {
+    string login_link = 1;
 }
 
 message Group {
