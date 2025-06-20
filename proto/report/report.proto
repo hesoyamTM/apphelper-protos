@@ -9,6 +9,8 @@ option go_package = "report.v1;reportv1";
 service Report {
     rpc GetReports(GetReportsRequest) returns (GetReportsResponse);
     rpc CreateReport(CreateReportRequest) returns (Empty);
+    rpc UpdateReport(UpdateReportRequest) returns (Empty);
+    rpc DeleteReport(DeleteReportRequest) returns (Empty);
 }
 
 message Empty {
@@ -30,6 +32,19 @@ message CreateReportRequest {
     string group_id = 2;
     string trainer_id = 3;
     // repeated image images = 3;
+    string description = 4;
+}
+
+message DeleteReportRequest {
+    string student_id = 1;
+    string trainer_id = 2;
+    string group_id = 3;
+}
+
+message UpdateReportRequest {
+    string student_id = 1;
+    string trainer_id = 2;
+    string group_id = 3;
     string description = 4;
 }
 
