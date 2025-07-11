@@ -7,6 +7,7 @@ option go_package = "sso.v1;ssov1";
 service Auth {
     rpc Register(RegisterRequest) returns (RegisterResponse);
     rpc Login(LoginRequest) returns (LoginResponse);
+    rpc Logout(LogoutRequest) returns (LogoutResponse);
     rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse);
     rpc SendVerificationEmail(SendVerificationEmailRequest) returns (SendVerificationEmailResponse);
     rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
@@ -104,6 +105,13 @@ message ChangePasswordRequest {
 }
 
 message ChangePasswordResponse {
+}
+
+message LogoutRequest {
+    string refreshToken = 1;
+}
+
+message LogoutResponse {
 }
 
 message User {
