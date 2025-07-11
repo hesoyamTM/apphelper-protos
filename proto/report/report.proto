@@ -31,7 +31,7 @@ message CreateReportRequest {
     string student_id = 1;
     string group_id = 2;
     string trainer_id = 3;
-    // repeated image images = 3;
+    repeated file files = 5;
     string description = 4;
 }
 
@@ -51,15 +51,16 @@ message UpdateReportRequest {
 message report {
     string student_id = 1;
     string trainer_id = 2;
-    repeated image images = 3;
+    repeated file files = 3;
     string description = 4;
     google.protobuf.Timestamp date = 5;
     string groupName = 6;
     string groupId = 7;
 }
 
-message image {
-    int32 width = 1;
-    int32 height = 2;
-    bytes image_data = 3;
+message file {
+    string name = 1;
+    string path = 2;
+    string content_type = 3;
+    bytes data = 4;
 }
