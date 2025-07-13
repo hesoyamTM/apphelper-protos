@@ -19,17 +19,18 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Auth_Register_FullMethodName              = "/auth.Auth/Register"
-	Auth_Login_FullMethodName                 = "/auth.Auth/Login"
-	Auth_Logout_FullMethodName                = "/auth.Auth/Logout"
-	Auth_VerifyEmail_FullMethodName           = "/auth.Auth/VerifyEmail"
-	Auth_SendVerificationEmail_FullMethodName = "/auth.Auth/SendVerificationEmail"
-	Auth_UpdateUser_FullMethodName            = "/auth.Auth/UpdateUser"
-	Auth_DeleteUser_FullMethodName            = "/auth.Auth/DeleteUser"
-	Auth_ChangePassword_FullMethodName        = "/auth.Auth/ChangePassword"
-	Auth_RefreshToken_FullMethodName          = "/auth.Auth/RefreshToken"
-	Auth_GetUser_FullMethodName               = "/auth.Auth/GetUser"
-	Auth_GetUsers_FullMethodName              = "/auth.Auth/GetUsers"
+	Auth_Register_FullMethodName               = "/auth.Auth/Register"
+	Auth_Login_FullMethodName                  = "/auth.Auth/Login"
+	Auth_Logout_FullMethodName                 = "/auth.Auth/Logout"
+	Auth_VerifyEmail_FullMethodName            = "/auth.Auth/VerifyEmail"
+	Auth_SendVerificationEmail_FullMethodName  = "/auth.Auth/SendVerificationEmail"
+	Auth_UpdateUser_FullMethodName             = "/auth.Auth/UpdateUser"
+	Auth_DeleteUser_FullMethodName             = "/auth.Auth/DeleteUser"
+	Auth_ChangePassword_FullMethodName         = "/auth.Auth/ChangePassword"
+	Auth_SendResetPasswordEmail_FullMethodName = "/auth.Auth/SendResetPasswordEmail"
+	Auth_RefreshToken_FullMethodName           = "/auth.Auth/RefreshToken"
+	Auth_GetUser_FullMethodName                = "/auth.Auth/GetUser"
+	Auth_GetUsers_FullMethodName               = "/auth.Auth/GetUsers"
 )
 
 // AuthClient is the client API for Auth service.
@@ -44,6 +45,7 @@ type AuthClient interface {
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
 	ChangePassword(ctx context.Context, in *ChangePasswordRequest, opts ...grpc.CallOption) (*ChangePasswordResponse, error)
+	SendResetPasswordEmail(ctx context.Context, in *SendVerificationEmailRequest, opts ...grpc.CallOption) (*SendVerificationEmailResponse, error)
 	RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error)
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error)
@@ -137,6 +139,16 @@ func (c *authClient) ChangePassword(ctx context.Context, in *ChangePasswordReque
 	return out, nil
 }
 
+func (c *authClient) SendResetPasswordEmail(ctx context.Context, in *SendVerificationEmailRequest, opts ...grpc.CallOption) (*SendVerificationEmailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SendVerificationEmailResponse)
+	err := c.cc.Invoke(ctx, Auth_SendResetPasswordEmail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *authClient) RefreshToken(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*RefreshTokenResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(RefreshTokenResponse)
@@ -179,6 +191,7 @@ type AuthServer interface {
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
 	ChangePassword(context.Context, *ChangePasswordRequest) (*ChangePasswordResponse, error)
+	SendResetPasswordEmail(context.Context, *SendVerificationEmailRequest) (*SendVerificationEmailResponse, error)
 	RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error)
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
 	GetUsers(context.Context, *GetUsersRequest) (*GetUsersResponse, error)
@@ -215,6 +228,9 @@ func (UnimplementedAuthServer) DeleteUser(context.Context, *DeleteUserRequest) (
 }
 func (UnimplementedAuthServer) ChangePassword(context.Context, *ChangePasswordRequest) (*ChangePasswordResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangePassword not implemented")
+}
+func (UnimplementedAuthServer) SendResetPasswordEmail(context.Context, *SendVerificationEmailRequest) (*SendVerificationEmailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendResetPasswordEmail not implemented")
 }
 func (UnimplementedAuthServer) RefreshToken(context.Context, *RefreshTokenRequest) (*RefreshTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
@@ -390,6 +406,24 @@ func _Auth_ChangePassword_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Auth_SendResetPasswordEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendVerificationEmailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).SendResetPasswordEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Auth_SendResetPasswordEmail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).SendResetPasswordEmail(ctx, req.(*SendVerificationEmailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Auth_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RefreshTokenRequest)
 	if err := dec(in); err != nil {
@@ -482,6 +516,10 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ChangePassword",
 			Handler:    _Auth_ChangePassword_Handler,
+		},
+		{
+			MethodName: "SendResetPasswordEmail",
+			Handler:    _Auth_SendResetPasswordEmail_Handler,
 		},
 		{
 			MethodName: "RefreshToken",
