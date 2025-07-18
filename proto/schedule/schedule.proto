@@ -115,6 +115,7 @@ message schedule {
     string group_id = 3;
     string student_id = 4;
     string trainer_id = 5;
-    google.protobuf.Timestamp start = 6;
-    google.protobuf.Timestamp end = 7;
+    string id = 6;
+    google.protobuf.Timestamp start = 7;
+    google.protobuf.Timestamp end = 8;
 }
